@@ -1,0 +1,29 @@
+# Credenciales. NUNCA se versionan: la cadena de conexion a la base da acceso
+# total al proyecto de Supabase.
+.env
+.env.*
+!.env.ejemplo
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Datos generados. Se reproducen con `python -m datos.generar` (semilla fija),
+# asi que versionarlos solo engordaria el repositorio.
+datos/procesados/*
+!datos/procesados/.gitkeep
+
+# Modelos entrenados y sus metricas: se regeneran con los notebooks.
+modelos/*.joblib
+modelos/*.pkl
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Sistema
+.DS_Store
+Thumbs.db
