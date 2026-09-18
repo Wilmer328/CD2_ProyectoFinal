@@ -71,7 +71,24 @@ copy .env.ejemplo .env          # y rellenar DATABASE_URL
 `DATABASE_URL` es la cadena de conexión del proyecto de Supabase. Está en
 `.gitignore`: **nunca se sube**. Cada integrante tiene la suya.
 
+## Cómo reproducir el análisis
+
+```bash
+python -m datos.generar      # dataset sintético, semilla fija
+python -m etl.cargar         # lo sube a Supabase (idempotente)
+python -m etl.ejecutar       # extrae, transforma y deja dataset.parquet
+jupyter lab notebooks/       # los cuadernos
+```
+
 ## Estado
 
-Recién creado. Pendiente: generador de datos, ETL, EDA, modelos, dashboard,
-documento.
+| Parte | Estado |
+|---|---|
+| Generador de datos sintéticos | ✅ 400 clientas · 3.672 ventas · 24 meses |
+| Carga a Supabase | ✅ 18.668 filas, idempotente |
+| ETL analítico | ✅ 2.188 ventas fiadas · 25,7% mora · 0 nulos |
+| EDA | ✅ `notebooks/01_eda.ipynb` · 8 figuras |
+| Modelo de riesgo de mora | ⬜ pendiente |
+| Proyección de ventas | ⬜ pendiente |
+| Dashboard | ⬜ pendiente |
+| Documento PDF | ⬜ pendiente |
