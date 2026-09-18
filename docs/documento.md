@@ -539,15 +539,26 @@ suficiente para estimarla.
 
 El componente traduce sus salidas a cuatro acciones concretas, implementadas en el tablero:
 
-| Riesgo estimado | Acción recomendada |
+| Puntaje de riesgo | Acción recomendada |
 |---|---|
-| Menor a 25% | Fiar con normalidad |
-| 25% – 40% | Fiar, pero agendar recordatorio de cobro |
-| 40% – 60% | Pedir abono inicial alto (50% o más) |
-| Mayor a 60% | Vender solo al contado |
+| Menor a 25 | Fiar con normalidad |
+| 25 – 40 | Fiar, pero agendar recordatorio de cobro |
+| 40 – 60 | Pedir abono inicial alto (50% o más) |
+| Mayor a 60 | Vender solo al contado |
 
 Los cortes no salen de la estadística sino del negocio: el intermedio es el que optimizó F1
 en la validación, y los otros dos se fijaron para que las franjas sean accionables.
+
+**Sobre la escala del puntaje.** El modelo se entrenó con `class_weight="balanced"`, que
+reequilibra las clases al 50/50 para impedir que aprenda a responder «paga» siempre. Ese
+ajuste, necesario, **desplaza los puntajes hacia arriba**: el promedio es 43,6% mientras la
+tasa de mora real del histórico es 25,7%.
+
+La consecuencia es que **el puntaje sirve para ordenar clientas entre sí, no para leerse
+como probabilidad literal**: un 45 no significa «45 de cada 100 fallarán». Como la decisión
+que habilita es de priorización —a quién pedirle más anticipo antes que a quién—, el orden
+es lo que importa, y el orden sí es válido. Calibrar la escala con `CalibratedClassifierCV`
+queda apuntado en futuras mejoras.
 
 **Decisiones habilitadas:**
 
@@ -654,6 +665,8 @@ posible y se deja para cuando exista histórico real suficiente para validarlo.
    pequeño en el producto base que eliminaría la limitación 2 por completo.
 3. **Reentrenar periódicamente.** El comportamiento de pago cambia; un modelo congelado
    envejece.
+4. **Calibrar la escala del puntaje** con `CalibratedClassifierCV`, para que el número pueda
+   leerse como una probabilidad real y no solo como un orden relativo.
 
 ### Mediano plazo
 

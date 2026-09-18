@@ -154,9 +154,9 @@ pestanas = st.tabs([
 with pestanas[0]:
     st.subheader("A quién fiar, y bajo qué condiciones")
     st.markdown(
-        "Cada clienta recibe una probabilidad estimada de no pagar a tiempo su próxima "
-        "compra fiada, y una acción recomendada. **Es una ayuda para priorizar, no un "
-        "veredicto**: la decisión final la toma quien conoce a la persona."
+        "Cada clienta recibe un **puntaje de riesgo** de no pagar a tiempo su próxima compra "
+        "fiada, y una acción recomendada. **Es una ayuda para priorizar, no un veredicto**: "
+        "la decisión final la toma quien conoce a la persona."
     )
 
     reparto = riesgo["recomendacion"].value_counts()
@@ -213,10 +213,17 @@ with pestanas[0]:
                 "historial_mora": "Atrasos previos",
                 "compras_previas": "Compras",
                 "total_centavos": "Última compra",
-            }).assign(**{"Última compra": lambda d: d["Última compra"] / 100}),
+            }).assign(**{
+                "Última compra": lambda d: d["Última compra"] / 100,
+                # ProgressColumn aplica el formato al valor CRUDO, no lo
+                # interpreta como proporcion: con 0,79 y formato "%.0f%%"
+                # escribia «1%» mientras la barra se dibujaba al 79%. Se escala
+                # a 0-100 para que el numero y la barra digan lo mismo.
+                "Riesgo": lambda d: d["Riesgo"] * 100,
+            }),
             column_config={
                 "Riesgo": st.column_config.ProgressColumn(
-                    "Riesgo", format="%.0f%%", min_value=0, max_value=1),
+                    "Riesgo", format="%.0f%%", min_value=0, max_value=100),
                 "Última compra": st.column_config.NumberColumn(format="L %.2f"),
             },
             hide_index=True,
@@ -229,6 +236,15 @@ with pestanas[0]:
         "históricamente no pagaron a tiempo. Un riesgo alto no significa que vaya a fallar: "
         "significa que conviene protegerse pidiendo un anticipo mayor o agendando el cobro.",
         icon="💡",
+    )
+
+    st.caption(
+        f"**El puntaje sirve para ordenar, no para leerlo como probabilidad literal.** "
+        f"El modelo se entrenó con `class_weight=\"balanced\"`, que reequilibra las clases "
+        f"al 50/50 para que no aprenda a decir «paga» siempre. Ese ajuste desplaza los "
+        f"puntajes hacia arriba: el promedio es {riesgo['probabilidad_mora'].mean():.0%} "
+        f"mientras la mora real del histórico es {datos['estado_pago'].mean():.0%}. "
+        f"Comparar clientas entre sí es válido; leer un 45% como «45 de cada 100 fallarán», no."
     )
 
 
