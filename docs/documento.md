@@ -18,11 +18,11 @@
 | Wilmer Josué Sánchez Gómez | 62211430 |
 
 **Sede:** Central
-**Fecha de entrega:** _(completar)_
+**Fecha de entrega:** 19 de septiembre de 2026
 
 **Repositorio:** https://github.com/Wilmer328/CD2_ProyectoFinal
 **Producto base:** https://www.jsanchez.site
-**Tablero interactivo:** _(completar con la URL de Streamlit Cloud)_
+**Tablero interactivo:** https://cd2proyectofinal-33tjuzgr53xy23jldsgrwu.streamlit.app/
 
 ---
 

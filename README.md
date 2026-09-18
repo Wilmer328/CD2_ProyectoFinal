@@ -22,6 +22,7 @@ II, en uso real por una vendedora por catálogo en Honduras. Registra ventas al
 contado, con abono inicial o al crédito; lleva el saldo de cada clienta; controla
 inventario; y agenda recordatorios de cobro.
 
+- Tablero interactivo: <https://cd2proyectofinal-33tjuzgr53xy23jldsgrwu.streamlit.app/>
 - Producto en vivo: <https://www.jsanchez.site>
 - Repositorio de la aplicación: <https://github.com/Wilmer328/April_Collections>
 
@@ -93,4 +94,4 @@ streamlit run dashboard/app.py   # el tablero
 | Proyección de ventas | ✅ `notebooks/03_proyeccion_ventas.ipynb` · MAPE 14% |
 | Dashboard | ✅ `dashboard/app.py` · Streamlit, 4 pestañas |
 | Documento | ✅ `docs/documento.md` · 13 secciones · 5.150 palabras |
-| Despliegue del tablero | ⬜ pendiente |
+| Despliegue del tablero | ✅ Streamlit Cloud |
