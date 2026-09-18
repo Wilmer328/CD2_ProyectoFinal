@@ -94,4 +94,5 @@ streamlit run dashboard/app.py   # el tablero
 | Proyección de ventas | ✅ `notebooks/03_proyeccion_ventas.ipynb` · MAPE 14% |
 | Dashboard | ✅ `dashboard/app.py` · Streamlit, 4 pestañas |
 | Documento | ✅ `docs/documento.md` · 13 secciones · 5.150 palabras |
-| Despliegue del tablero | ✅ Streamlit Cloud |
+| Despliegue del tablero | ✅ Streamlit Cloud, público |
+| Presentación | ✅ `docs/presentacion.html` · 17 diapositivas |
