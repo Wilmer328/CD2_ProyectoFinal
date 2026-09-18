@@ -57,6 +57,8 @@ USO
 
 from __future__ import annotations
 
+import unicodedata
+
 import numpy as np
 import pandas as pd
 
@@ -89,6 +91,41 @@ def totales_por_venta(venta_items: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def homologar_categorias(categorias: pd.Series) -> pd.Series:
+    """
+    Unifica categorias que son la misma escrita distinto.
+
+    La aplicacion deja que la usuaria escriba el nombre de la categoria a mano,
+    y eso produce duplicados sintacticos: «Joyeria» y «Joyería» conviven como
+    rubros separados porque una lleva tilde y la otra no. La base lo permite
+    —su indice unico compara en minusculas, pero no ignora las tildes— y para
+    el analisis son la misma cosa.
+
+    Si no se homologan, el modelo trata cada grafia como una categoria
+    independiente, reparte entre ellas la evidencia y aprende peor de las dos.
+
+    Se agrupan ignorando tildes y mayusculas, y de cada grupo se conserva como
+    nombre la grafia mas frecuente: la forma en que realmente se escribe en el
+    negocio, no una normalizacion inventada.
+    """
+    def clave(texto: str) -> str:
+        descompuesto = unicodedata.normalize("NFKD", str(texto).strip().lower())
+        return "".join(c for c in descompuesto if not unicodedata.combining(c))
+
+    claves = categorias.map(clave)
+
+    # La grafia mas usada de cada grupo gana.
+    canonica = (
+        pd.DataFrame({"clave": claves, "nombre": categorias})
+        .groupby(["clave", "nombre"]).size()
+        .reset_index(name="veces")
+        .sort_values("veces")
+        .groupby("clave")["nombre"].last()
+    )
+
+    return claves.map(canonica)
+
+
 def categoria_principal(venta_items: pd.DataFrame, productos: pd.DataFrame) -> pd.Series:
     """
     La categoria que mas peso tiene en cada venta, por importe.
@@ -103,7 +140,9 @@ def categoria_principal(venta_items: pd.DataFrame, productos: pd.DataFrame) -> p
     )
 
     lineas["importe"] = lineas["precio_centavos"] * lineas["cantidad"]
-    lineas["categoria"] = lineas["categoria"].fillna("Sin categoria")
+    lineas["categoria"] = homologar_categorias(
+        lineas["categoria"].fillna("Sin categoria")
+    )
 
     por_categoria = lineas.groupby(["venta_id", "categoria"])["importe"].sum()
 
@@ -207,6 +246,16 @@ def construir(tablas: dict[str, pd.DataFrame], hoy: pd.Timestamp | None = None) 
         categoria_principal(tablas["venta_items"], tablas["productos"])
     ).fillna("Sin categoria")
 
+    # ── Nombre de la clienta ──
+    # Solo para mostrar. NO entra al modelo: el nombre de una persona no dice
+    # nada sobre si va a pagar, y dejarlo entrar abriria la puerta a que el
+    # modelo aprendiera prejuicios sobre apellidos. Se incluye porque el
+    # dashboard tiene que poder decir «a Ana Martinez, pedirle abono alto»; un
+    # identificador no sirve para decidir nada.
+    ventas["cliente_nombre"] = ventas["cliente_id"].map(
+        tablas["clientes"].set_index("id")["nombre"]
+    ).fillna("(sin nombre)")
+
     # ── Historial de la clienta, SIN mirar al futuro ──
     ventas = _agregar_historial(ventas)
 
@@ -267,7 +316,7 @@ def _agregar_historial(ventas: pd.DataFrame) -> pd.DataFrame:
 #: Columnas del dataset analitico, en el orden en que se entregan.
 COLUMNAS = [
     # Identificacion (no entran al modelo)
-    "id", "cliente_id", "fecha",
+    "id", "cliente_id", "cliente_nombre", "fecha",
     # Predictoras conocidas EN EL MOMENTO DE FIAR
     "tipo_pago", "categoria_producto", "total_centavos", "abono_inicial_centavos",
     "porcentaje_abono_inicial", "porcentaje_ganancia", "articulos", "lineas",

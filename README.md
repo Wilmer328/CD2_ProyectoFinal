@@ -78,6 +78,7 @@ python -m datos.generar      # dataset sintético, semilla fija
 python -m etl.cargar         # lo sube a Supabase (idempotente)
 python -m etl.ejecutar       # extrae, transforma y deja dataset.parquet
 jupyter lab notebooks/       # los cuadernos
+streamlit run dashboard/app.py   # el tablero
 ```
 
 ## Estado
@@ -90,5 +91,5 @@ jupyter lab notebooks/       # los cuadernos
 | EDA | ✅ `notebooks/01_eda.ipynb` · 8 figuras |
 | Modelo de riesgo de mora | ✅ `notebooks/02_riesgo_de_mora.ipynb` · Random Forest · ROC-AUC 0,742 |
 | Proyección de ventas | ✅ `notebooks/03_proyeccion_ventas.ipynb` · MAPE 14% |
-| Dashboard | ⬜ pendiente |
+| Dashboard | ✅ `dashboard/app.py` · Streamlit, 4 pestañas |
 | Documento PDF | ⬜ pendiente |
