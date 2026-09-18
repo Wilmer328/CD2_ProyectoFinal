@@ -92,4 +92,5 @@ streamlit run dashboard/app.py   # el tablero
 | Modelo de riesgo de mora | ✅ `notebooks/02_riesgo_de_mora.ipynb` · Random Forest · ROC-AUC 0,742 |
 | Proyección de ventas | ✅ `notebooks/03_proyeccion_ventas.ipynb` · MAPE 14% |
 | Dashboard | ✅ `dashboard/app.py` · Streamlit, 4 pestañas |
-| Documento PDF | ⬜ pendiente |
+| Documento | ✅ `docs/documento.md` · 13 secciones · 5.150 palabras |
+| Despliegue del tablero | ⬜ pendiente |
