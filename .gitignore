@@ -16,9 +16,14 @@ venv/
 # asi que versionarlos solo engordaria el repositorio.
 datos/procesados/*
 !datos/procesados/.gitkeep
+# Excepcion: el dataset analitico si se versiona (130 KB). Es lo que consume el
+# dashboard, y sin el no se podria desplegar ni abrir la demo sin credenciales
+# de Supabase.
+!datos/procesados/dataset.parquet
 
-# Modelos entrenados y sus metricas: se regeneran con los notebooks.
-modelos/*.joblib
+# Modelos entrenados: normalmente no se versionan porque son artefactos de
+# compilacion. Este si, por el mismo motivo que el dataset: el dashboard lo
+# carga al arrancar y tiene que poder desplegarse solo con el repositorio.
 modelos/*.pkl
 
 # Streamlit

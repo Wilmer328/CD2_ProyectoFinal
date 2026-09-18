@@ -88,7 +88,7 @@ jupyter lab notebooks/       # los cuadernos
 | Carga a Supabase | ✅ 18.668 filas, idempotente |
 | ETL analítico | ✅ 2.188 ventas fiadas · 25,7% mora · 0 nulos |
 | EDA | ✅ `notebooks/01_eda.ipynb` · 8 figuras |
-| Modelo de riesgo de mora | ⬜ pendiente |
+| Modelo de riesgo de mora | ✅ `notebooks/02_riesgo_de_mora.ipynb` · Random Forest · ROC-AUC 0,742 |
 | Proyección de ventas | ⬜ pendiente |
 | Dashboard | ⬜ pendiente |
 | Documento PDF | ⬜ pendiente |
