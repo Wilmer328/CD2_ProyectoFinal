@@ -201,7 +201,28 @@ lo que hace el análisis completamente reproducible.
 | **Filas cargadas en total** | **18.668** |
 | **Ventas fiadas analizables** | **2.188** |
 
-### 4.3 Diccionario de datos del conjunto analítico
+### 4.3 Esquema relacional
+
+![Esquema relacional de April Collections](figuras/00_esquema_bd.png)
+
+Doce tablas, creadas por las ocho migraciones del producto. Tres decisiones del esquema
+resultan determinantes para el análisis:
+
+- **El negocio es el dueño de los datos.** Cinco tablas llevan `negocio_id`, que es lo que
+  decide el acceso mediante Row Level Security. `owner_id` se conserva solo como rastro de
+  quién creó cada fila.
+- **Una venta son tres tablas.** `ventas` es la cabecera, `venta_items` lleva los productos
+  y `abonos` cada pago con su fecha. El saldo pendiente **no se guarda**: se calcula, y por
+  eso existe el historial completo de pagos del que depende todo este trabajo.
+- **El precio de venta es histórico.** `venta_items` copia nombre, precio y costo al momento
+  de vender, de modo que la ganancia de las ventas pasadas no cambia si sube el costo del
+  producto.
+
+Dos reglas de integridad merecen mención: `clientes → ventas` es **RESTRICT** —no se puede
+borrar una clienta con ventas—, y `productos → venta_items` es **SET NULL** —al retirar un
+producto del catálogo, la línea conserva su copia histórica—. Ambas protegen el historial.
+
+### 4.4 Diccionario de datos del conjunto analítico
 
 Cada fila es **una venta fiada**. Las ventas al contado se excluyen: se pagan en el acto y
 no pueden entrar en mora.
@@ -251,7 +272,7 @@ no pueden entrar en mora.
 | `cobrado_al_corte` | Junto con el total determina el pendiente |
 | `fecha_corte` | Información posterior al momento de la decisión |
 
-### 4.4 Definición de la variable objetivo
+### 4.5 Definición de la variable objetivo
 
 > Una venta fiada está **en mora** si, al llegar su fecha de corte, todavía tenía saldo
 > pendiente.
