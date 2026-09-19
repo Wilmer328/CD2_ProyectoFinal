@@ -95,4 +95,4 @@ streamlit run dashboard/app.py   # el tablero
 | Dashboard | ✅ `dashboard/app.py` · Streamlit, 4 pestañas |
 | Documento | ✅ `docs/documento.md` · 13 secciones · 5.150 palabras |
 | Despliegue del tablero | ✅ Streamlit Cloud, público |
-| Presentación | ✅ `docs/presentacion.html` · 17 diapositivas |
+| Presentación | ✅ `docs/presentacion.html` · 18 diapositivas, mismo orden que el documento |
