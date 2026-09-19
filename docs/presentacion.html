@@ -171,14 +171,16 @@ Es que <strong>nadie los está leyendo como evidencia</strong>.</p>
 <strong>dos decisiones</strong>:</p>
 <div class="dos">
   <div class="tarjeta">
-    <p class="rotulo">Decisión 1</p>
+    <p class="rotulo">Decisión 1 · modelo principal</p>
     <p class="grande">¿A quién fiar, y bajo qué condiciones?</p>
-    <p>Un puntaje de riesgo por clienta, con una acción recomendada.</p>
+    <p>Un puntaje de riesgo por clienta, con una acción recomendada. Es donde está el
+    dinero que se pierde, y donde va la mayor parte del trabajo.</p>
   </div>
   <div class="tarjeta">
-    <p class="rotulo">Decisión 2</p>
+    <p class="rotulo">Decisión 2 · modelo complementario</p>
     <p class="grande">¿Cuánto inventario comprar?</p>
-    <p>Una proyección del volumen del próximo mes, con su margen de error.</p>
+    <p>Una proyección del volumen del próximo mes, con su margen de error, y cuándo
+    conviene encargar con antelación.</p>
   </div>
 </div>
 <p class="remate">Un tercer problema — la estrategia de precios — lo identificamos y
@@ -369,19 +371,35 @@ aprendió el fenómeno, no un artefacto de los datos.</p>
     </div>
   </div>
 </div>
-</div></section><section class="diapositiva" data-guion="Aquí pasamos al tablero en vivo. Lo importante es que no muestra probabilidades sino acciones: fiar con normalidad, agendar recordatorio, pedir abono alto o vender al contado. [ABRIR EL TABLERO Y RECORRER LAS CUATRO PESTAÑAS, 2 MINUTOS]"><header><span class="numero">8</span><h2>Decisiones que se pueden tomar</h2><span class="ponente">Wilmer</span></header><div class="contenido">
+</div></section><section class="diapositiva" data-guion="Aquí pasamos al tablero en vivo, y aquí se cierran las dos decisiones que prometimos en los objetivos. La primera: a quién fiar, con cuatro acciones según el puntaje. La segunda: cuánto comprar, con un rango en vez de una cifra, y cuándo, porque mayo y diciembre exigen encargar con antelación. [ABRIR EL TABLERO: PESTAÑA RIESGO, LUEGO PESTAÑA PROYECCIÓN, 2 MINUTOS]"><header><span class="numero">8</span><h2>Decisiones que se pueden tomar</h2><span class="ponente">Wilmer</span></header><div class="contenido">
 <div class="demo">
-  <p class="grande">De la probabilidad a la <strong>acción</strong>.</p>
+  <p class="rotulo">Decisión 1 · ¿A quién fiar, y bajo qué condiciones?</p>
   <div class="acciones">
     <div class="accion verde"><b>Fiar con normalidad</b><span>riesgo &lt; 25</span></div>
     <div class="accion oro"><b>Fiar con recordatorio</b><span>25 – 40</span></div>
     <div class="accion rosa"><b>Pedir abono alto</b><span>40 – 60</span></div>
     <div class="accion rojo"><b>Solo al contado</b><span>&gt; 60</span></div>
   </div>
-  <p>La salida útil no es «0,63» sino <strong>qué hacer con ese 0,63</strong>.</p>
+  <p>Cada clienta recibe un puntaje y una acción. La salida útil no es «0,63» sino
+  <strong>qué hacer con ese 0,63</strong>.</p>
+
+  <p class="rotulo" style="margin-top:18px">Decisión 2 · ¿Cuánto inventario comprar?</p>
+  <div class="dos">
+    <div class="tarjeta">
+      <p><strong>Cuánto.</strong> La proyección del mes da un rango —no una cifra— y la
+      dueña elige el escenario: el bajo si el capital está ajustado, el alto si prefiere no
+      quedarse sin producto.</p>
+    </div>
+    <div class="tarjeta">
+      <p><strong>Cuándo.</strong> Mayo y diciembre venden hasta el doble que un mes normal:
+      hay que encargar con semanas de antelación. Enero y febrero permiten reducir stock y
+      liberar capital.</p>
+    </div>
+  </div>
+
   <p class="enlace grande">https://cd2proyectofinal-33tjuzgr53xy23jldsgrwu.streamlit.app/</p>
-  <p class="remate">Cuatro pestañas: riesgo por clienta · proyección · estado del negocio ·
-  calidad del modelo</p>
+  <p class="remate">Las dos decisiones viven en el tablero: pestañas <em>riesgo por
+  clienta</em> y <em>proyección de ventas</em>.</p>
 </div>
 </div></section><section class="diapositiva" data-guion="El valor agregado: antes se fiaba de memoria y la detección de riesgo era cero. Ahora hay 380 clientas ordenadas por riesgo y el modelo detecta casi la mitad de las moras. Y una decisión de la que estamos convencidos: no lo conectamos a producción. Un modelo entrenado con datos sintéticos no debe decidir sobre personas reales."><header><span class="numero">9</span><h2>Valor agregado demostrado</h2><span class="ponente">Wilmer</span></header><div class="contenido">
 <div class="dos">
@@ -389,18 +407,20 @@ aprendió el fenómeno, no un artefacto de los datos.</p>
     <p class="rotulo">Antes</p>
     <ul>
       <li>Se fía de memoria</li>
+      <li>Detección de riesgo: <strong>0%</strong></li>
       <li>La gestión de cobro es una lista plana</li>
       <li>El inventario se decide por intuición</li>
-      <li>Detección de riesgo: <strong>0%</strong></li>
+      <li>Los meses fuertes sorprenden</li>
     </ul>
   </div>
   <div class="destacado">
     <p class="rotulo">Ahora</p>
     <ul>
       <li>380 clientas <strong>ordenadas por riesgo</strong></li>
-      <li>Cobro priorizado por riesgo y monto</li>
-      <li>Proyección con margen de error explícito</li>
       <li>Detección: <strong>47,5%</strong> de las moras</li>
+      <li>Cobro priorizado por riesgo y monto</li>
+      <li>Proyección con <strong>rango</strong>, no una cifra a ciegas</li>
+      <li>Mayo y diciembre se preparan <strong>con antelación</strong></li>
     </ul>
   </div>
 </div>
