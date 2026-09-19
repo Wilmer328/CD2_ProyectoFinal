@@ -15,6 +15,58 @@ pedir de abono inicial y cuánto inventario comprar.
 
 Docente: Ing. Naomy Zoey Ríos Reyes
 
+## Guía de revisión — dónde está cada cosa
+
+Para quien evalúa el proyecto. Cada pregunta lleva al archivo y la línea exacta.
+
+### Los cuatro entregables
+
+| Entregable | Dónde |
+|---|---|
+| **Documento** (13 secciones) | [`docs/documento.md`](docs/documento.md) — se lee directamente en GitHub con sus 11 figuras |
+| **Dashboard** | <https://cd2proyectofinal-33tjuzgr53xy23jldsgrwu.streamlit.app/> — público, sin registro. Código en [`dashboard/app.py`](dashboard/app.py) |
+| **Repositorio** | Este. Estructura más abajo |
+| **Presentación** | [`docs/presentacion.html`](docs/presentacion.html) — descargar y abrir en cualquier navegador; flechas para avanzar, tecla **G** para el guion |
+
+### ¿Dónde se calcula…?
+
+| Pregunta | Archivo y línea |
+|---|---|
+| ¿Cómo se decide si una venta cayó en **mora**? | [`etl/transformar.py` L219](etl/transformar.py#L219) — `estado_pago = 1` si al llegar la fecha prometida quedaba saldo pendiente |
+| ¿Cómo se calcula el **historial** de cada clienta sin mirar al futuro? | [`etl/transformar.py` L275](etl/transformar.py#L275) — `_agregar_historial()`, en orden cronológico, restando la fila actual del acumulado |
+| ¿Qué **variables** entran al modelo y cuáles se excluyen por contener la respuesta? | [`etl/transformar.py` L317](etl/transformar.py#L317) — lista `COLUMNAS`, y [`modelos/metricas.json`](modelos/metricas.json) bajo `"variables"` y `"excluidas_por_fuga"` |
+| ¿Dónde se **entrena** el modelo? | [`notebooks/02_riesgo_de_mora.ipynb`](notebooks/02_riesgo_de_mora.ipynb) — sección 3, celda que empieza con `modelos = {`; el modelo entrenado queda en [`modelos/riesgo_de_mora.joblib`](modelos/riesgo_de_mora.joblib) |
+| ¿Dónde se calcula el **puntaje de riesgo** de cada clienta? | [`dashboard/app.py` L112](dashboard/app.py#L112) — `calcular_riesgo()`; la línea 120 ejecuta el modelo |
+| ¿Dónde se decide **fiar o no fiar**? | [`dashboard/app.py` L85](dashboard/app.py#L85) — `recomendar()`: cuatro franjas, cuatro acciones |
+| ¿Cómo se **proyectan** las ventas? | [`notebooks/03_proyeccion_ventas.ipynb`](notebooks/03_proyeccion_ventas.ipynb) — sección 3 compara cuatro modelos sobre meses ocultos |
+| ¿Cómo se **generan** los datos sintéticos? | [`datos/generar.py`](datos/generar.py) — la fiabilidad latente de cada clienta está en `generar_clientas()` |
+| ¿Cómo es la **base de datos**? | [`docs/diagrama_bd.md`](docs/diagrama_bd.md) — diagrama entidad-relación, se ve en GitHub |
+
+### ¿Cómo verificar lo que dice el documento?
+
+Sin conexión a nada, solo con Python:
+
+```bash
+pip install -r requirements.txt
+python -m etl.verificar
+```
+
+Ejecuta 17 comprobaciones contra el dataset y el modelo versionados: que el historial no
+mira al futuro (fila por fila), que ninguna columna con la respuesta entra al modelo, que la
+tasa de mora es la declarada, que la línea base tiene más exactitud que el modelo y detecta
+cero moras. Falla si alguna afirmación del documento no se cumple.
+
+### Qué necesita cada cosa para ejecutarse
+
+| Solo con Python (`pip install -r requirements.txt`) | Necesita además el `.env` con Supabase |
+|---|---|
+| `dashboard/app.py` · `notebooks/02_riesgo_de_mora.ipynb` · `datos/generar.py` · `etl/verificar.py` | `etl/cargar.py` · `etl/ejecutar.py` · `notebooks/01_eda.ipynb` · `notebooks/03_proyeccion_ventas.ipynb` |
+
+Los tres notebooks están **ejecutados y con sus resultados dentro**: se leen en GitHub sin
+correr nada. El `.env` solo hace falta para re-ejecutar los que consultan la base.
+
+---
+
 ## El proyecto original
 
 April Collections es una PWA construida para el curso de Ingeniería de Software
