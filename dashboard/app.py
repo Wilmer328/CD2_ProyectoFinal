@@ -178,7 +178,6 @@ with pestanas[0]:
             "Acción recomendada", list(COLOR_ACCION), default=list(COLOR_ACCION),
             label_visibility="collapsed",
         )
-        minimo = st.slider("Riesgo mínimo", 0.0, 1.0, 0.0, 0.05)
         buscar = st.text_input("Buscar clienta", placeholder="nombre…")
 
         st.plotly_chart(
@@ -190,10 +189,7 @@ with pestanas[0]:
         )
 
     with izquierda:
-        filtrado = riesgo[
-            riesgo["recomendacion"].isin(acciones)
-            & (riesgo["probabilidad_mora"] >= minimo)
-        ]
+        filtrado = riesgo[riesgo["recomendacion"].isin(acciones)]
 
         if buscar:
             filtrado = filtrado[
@@ -320,14 +316,6 @@ with pestanas[1]:
         use_container_width=True,
     )
 
-    st.warning(
-        "**Dos años de historial son pocos para proyectar con estacionalidad.** Cada mes "
-        "del año está representado por dos observaciones. En la validación, los modelos "
-        "que intentaron aprovechar la estacionalidad quedaron por detrás del que "
-        "simplemente repite el último mes. La proyección sirve para dimensionar una "
-        "compra, no como cifra exacta.",
-        icon="⚠️",
-    )
 
 
 # ══ 3. Estado del negocio ═════════════════════════════════════════════════
